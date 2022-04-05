@@ -13,7 +13,12 @@ def test_init():
     assert len(dna.seq) % 3 ==0, 'DNA sequence is not a multiple of three'
 
 
-def test_init_wrong():
+def test_create_dna_objeect():
+    dna = DNA('ACTGACTGACTA')
+    assert isinstance(dna, DNA)
+
+
+def test_init_wrong_sequence_type():
     with pytest.raises(TypeError):
         dna = DNA(2)
 
@@ -41,7 +46,7 @@ def test_add_nucs():
     dna = DNA('ACTGACTGACTA')
     # old = dna.seq
     # dna.seq = dna.seq + "ACG"
-    assert dna.seq + "ACG" == "ACTGACTGACTAACG"
+    assert str(dna.seq + "ACG") == "ACTGACTGACTAACG"
 
 
 def test_add_wrong_type():
@@ -53,7 +58,13 @@ def test_add_wrong_type():
 def test_add_wrong_length():
     with pytest.raises(ValueError, match = r"Can only add 3 nucleotides not: \d+"):
         dna = DNA('ACTGACTGACTA')
-        dna + "ATCG"
+        new_dna = dna + "ATCG"
+
+
+def test_add_wrong_type():
+    with pytest.raises(NotDNAError):
+        dna = DNA('ACTGACTGACTA')
+        dna + "1aA"
 
 
 def test_iterator():
@@ -68,10 +79,14 @@ def test_iterator():
 def test_immutability():
     dna = DNA('ACTGACTGACTA')
 
-    id_before = id(dna.seq)
-    dna.__seq = "ACTGTC"
-    id_after = id(dna.seq)
-    assert id_after == id_before, "seq object is not immutable"
+    # id_before = id(dna.seq)
+    # dna.__seq = "ACTGTC"
+    # id_after = id(dna.seq)
+    # assert id_after == id_before, "seq object is not immutable"
+
+    dna_id = id(dna)
+    new_dna = dna + "ACG"
+    assert dna_id != id(new_dna)
 
 
 def test_docstrings():
