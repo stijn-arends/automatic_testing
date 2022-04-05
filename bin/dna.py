@@ -21,6 +21,13 @@ class DNA:
         """
         init
         """
+        self.check_seq(seq)
+        self.__seq = seq.upper()
+
+    def check_seq(self, seq):
+        """
+        Check the sequence for validity
+        """
         if not isinstance(seq, str):
             raise TypeError(f"Sequence must be a string, not a {type(seq)}")
 
@@ -28,8 +35,8 @@ class DNA:
             raise NotDNAError
 
         if len(seq) % 3 !=0:
-            raise ValueError(f"DNA sequence needs to be a multiple of three.")
-        self.__seq = seq.upper()
+            # raise ValueError(f"DNA sequence needs to be a multiple of three .")
+            raise ValueError(f"Can only add 3 nucleotides not: {len(seq)}")
 
     @property
     def seq(self):
@@ -56,12 +63,18 @@ class DNA:
         seq - str
             old sequence plus the new codon
         """
-        if not isinstance(val, str):
-            raise TypeError(f"Cannot add {type(val)} with str")
+        # self.check_seq(val)
+        # if not isinstance(val, str):
+        #     raise TypeError(f"Cannot add {type(val)} with str")
 
-        if len(val) != 3:
-            raise ValueError(f"Can only add 3 nucleotides not: {len(val)}")
-        return self.seq + val
+        # if not re.compile('^[ACTG]+$').match(val.upper()):
+        #     raise NotDNAError
+
+        # if len(val) != 3:
+        #     raise ValueError(f"Can only add 3 nucleotides not: {len(val)}")
+        # return self.seq + val
+        # return self
+        return DNA(self.seq + val)
 
 
     def __iter__(self):
@@ -75,8 +88,8 @@ class DNA:
 if __name__ == "__main__":
     dna = DNA('ACTGACTGACTA')
 
-    # # for codon in dna:
-    # #     print(codon)
+    # for codon in dna:
+    #     print(codon)
 
     # test = [dna.seq[i:i+3] for i in range(0, len(dna.seq), 3)]
     # print(test)
